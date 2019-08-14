@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 14, 2019 11:04:12 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojo.SinhVien" table="sinh_vien" catalog="QuanLySinhVien" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="code" type="string">
+            <column name="code" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="sex" type="java.lang.Byte">
+            <column name="sex" />
+        </property>
+        <property name="identityCard" type="string">
+            <column name="identity_card" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" />
+        </property>
+    </class>
+</hibernate-mapping>
