@@ -41,14 +41,12 @@ Contributor(s):
 -->
 <hibernate-configuration>
   <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/Student?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/QuanLySinhVien</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">mysql</property>
-    <mapping resource="Models/Classes.hbm.xml"/>
-    <mapping resource="Models/Schedule.hbm.xml"/>
-    <mapping resource="Models/User.hbm.xml"/>
-    <mapping resource="Models/Student.hbm.xml"/>
+    <mapping resource="pojo/ThoiKhoaBieu.hbm.xml"/>
+    <mapping resource="pojo/SinhVien.hbm.xml"/>
+    <mapping resource="pojo/Lop.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

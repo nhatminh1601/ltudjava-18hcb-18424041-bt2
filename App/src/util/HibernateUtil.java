@@ -3,17 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controllers;
+package util;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.SessionFactory;
 
 /**
+ * Hibernate Utility class with a convenient method to get Session Factory
+ * object.
  *
  * @author nguye
  */
-public class ConnectDB {
-     private static final SessionFactory sessionFactory;
+public class HibernateUtil {
+
+    private static final SessionFactory sessionFactory;
     
     static {
         try {
