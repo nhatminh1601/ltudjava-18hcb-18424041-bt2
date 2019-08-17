@@ -40,8 +40,9 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-reverse-engineering>
-  <schema-selection match-catalog="QuanLySinhVien"/>
-  <table-filter match-name="sinh_vien"/>
-  <table-filter match-name="thoi_khoa_bieu"/>
-  <table-filter match-name="lop"/>
+  <schema-selection match-catalog="Student"/>
+  <table-filter match-name="schedules"/>
+  <table-filter match-name="classroom"/>
+  <table-filter match-name="students"/>
+  <table-filter match-name="users"/>
 </hibernate-reverse-engineering>
