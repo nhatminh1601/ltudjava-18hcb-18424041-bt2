@@ -5,9 +5,20 @@
  */
 package Gui;
 
-import dao.SinhVienDAO;
+import dao.StudentDAO;
+import static dao.StudentDAO.compareStudent;
+import static dao.UserDAO.compareUser;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
-import pojo.SinhVien;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import org.apache.derby.impl.sql.catalog.SYSPERMSRowFactory;
+import pojo.Students;
+import pojo.Users;
 
 /**
  *
@@ -20,6 +31,8 @@ public class Login_Form extends javax.swing.JFrame {
      */
     public Login_Form() {
         initComponents();
+        rGiaoVu.setSelected(true);
+        tvUserName.requestFocus();
     }
 
     /**
@@ -121,32 +134,52 @@ public class Login_Form extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
-    
-        Main form= new Main();
-        form.setVisible(true);
-        form.pack();
-        form.setLocationRelativeTo(null);
-        this.dispose();
+        String name = tvUserName.getText();
+        String password = tvPassword.getText();
+        if (rGiaoVu.isSelected()) {
+            Users giaovu = compareUser(name, password);
+            if (giaovu == null) {
+                resetfrom();
+                JOptionPane.showMessageDialog(null, "Kiểm Tra Lại Mật Khẩu Hoặc Tên Đăng Nhập Giáo Vụ!!");
+                return;
+            }
+        } else {
+            Students item = compareStudent(name, password);
+            if (item == null) {
+                resetfrom();
+                JOptionPane.showMessageDialog(null, "Kiểm Tra Lại Mật Khẩu Hoặc Tên Đăng Nhập Sinh Viên!!");
+                return;
+            }
+        }
+        this.setVisible(false);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                Main form = new Main();
+                //form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                form.setVisible(true);
+            }
+        });
+//        Main form = new Main();
+//        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        form.setVisible(true);
+//        form.pack();
+//        form.setLocationRelativeTo(null);
+//        this.dispose();
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       
-         List<SinhVien> ds= SinhVienDAO.listStudent();
-        ds.forEach((itemSinhVien) -> {
-            System.out.println(itemSinhVien.getName());
-        });
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                Login_Form loginForm=new Login_Form();
+                Login_Form loginForm = new Login_Form();
                 loginForm.setTitle("Login");
                 loginForm.setVisible(true);
-                
+
             }
         });
-       
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -161,4 +194,10 @@ public class Login_Form extends javax.swing.JFrame {
     private javax.swing.JPasswordField tvPassword;
     private javax.swing.JTextField tvUserName;
     // End of variables declaration//GEN-END:variables
+
+    private void resetfrom() {
+        tvPassword.setText("");
+        tvUserName.setText("");
+        tvUserName.requestFocus();
+    }
 }
