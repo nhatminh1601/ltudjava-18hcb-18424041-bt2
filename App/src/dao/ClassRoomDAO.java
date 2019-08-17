@@ -8,25 +8,27 @@ package dao;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import pojo.SinhVien;
+import pojo.Classroom;
 import util.HibernateUtil;
 
 /**
  *
  * @author nguye
  */
-public class SinhVienDAO {
-
-    public static List<SinhVien> listStudent() {
-        List<SinhVien> listData = null;
+public class ClassRoomDAO {
+     public static List<Classroom> listClass() {
+        List<Classroom> listData = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "from SinhVien ";
+            String hql = "select c from Classroom c";
             Query query = session.createQuery(hql);
             listData = query.list();
         } catch (Exception e) {
             System.err.println(e);
+        } finally {
+            session.close();
         }
+
         return listData;
     }
 }
