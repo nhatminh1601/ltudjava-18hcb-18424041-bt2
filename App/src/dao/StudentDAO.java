@@ -5,6 +5,7 @@
  */
 package dao;
 
+import static dao.ClassRoomDAO.GetcodeClass;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
@@ -39,9 +40,34 @@ public class StudentDAO {
         return listData;
     }
 
-    public static DefaultTableModel ShowStudentTable(JTable table) {
-        List<Students> listDatArrayList = listStudent();
+    public static List<Students> listStudentClass(String lop) {
+        List<Students> listData = null;
+        Classroom itemClassrooms = GetcodeClass(lop);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            String hql = "select sv from Students sv where classroom = :classroom";
+            Query query = session.createQuery(hql);
+            query.setParameter("classroom", itemClassrooms);
+            listData = query.list();
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            session.close();
+        }
+
+        return listData;
+    }
+
+    public static DefaultTableModel ShowStudentTable(JTable table, String lop) {
+        List<Students> listDatArrayList = null;
+        System.out.print(lop);
+        if (lop.toString().equals("All")) {
+            listDatArrayList = listStudent();
+        } else {
+            listDatArrayList = listStudentClass(lop);
+        }
         DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
         Object[] row = new Object[5];
         for (Students item : listDatArrayList) {
             row[0] = item.getCode();
@@ -50,24 +76,33 @@ public class StudentDAO {
             row[2] = sex;
             Classroom classroom;
             classroom = item.getClassroom();
-            row[3] =classroom.getCode();
+            row[3] = classroom.getCode();
             row[4] = item.getIndentityCard();
             model.addRow(row);
         }
+        table.setModel(model);
+        //model.fireTableDataChanged();
+
         return model;
     }
 
     public static Students GetCodeStudent(String codeSv) {
         Students item = null;
+        List<Students> listItemList = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             String hqlString = "FROM Students s WHERE s.code = :codesv";
             Query query = session.createQuery(hqlString);
             query.setParameter("codesv", codeSv);
-            item = (Students) query;
-        } catch (Exception e) {
+            listItemList = query.list();
+        } catch (HibernateException e) {
+            System.out.println(e);
+        } finally {
+            if (listItemList.size() > 0) {
+                item = listItemList.get(0);
+            }
+            return item;
         }
-        return item;
     }
 
     public static Students GetIdStudent(int id) {
@@ -75,7 +110,8 @@ public class StudentDAO {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             item = (Students) session.get(Students.class, id);
-        } catch (Exception e) {
+        } catch (HibernateException e) {
+            System.out.println(e);
         }
         return item;
     }
@@ -99,15 +135,15 @@ public class StudentDAO {
         return true;
     }
 
-    public static boolean editStudent(Students item) {
+    public static boolean editStudent(Students itemStudent) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        if (StudentDAO.GetIdStudent(item.getId()) != null) {
+        if (StudentDAO.GetIdStudent(itemStudent.getId()) == null) {
             return false;
         }
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            session.update(item);
+            session.update(itemStudent);
             transaction.commit();
         } catch (HibernateException e) {
             transaction.rollback();
