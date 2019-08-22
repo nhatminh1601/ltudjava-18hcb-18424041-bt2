@@ -8,6 +8,12 @@
             <column name="id" />
             <generator class="identity" />
         </id>
+        <set inverse="true" name="transcriptses" cascade="all">
+            <key>
+                <column length="11" name="student_id" not-null="true"/>          
+            </key>
+            <one-to-many class="pojo.Transcripts"/>
+        </set>
         <many-to-one name="classroom" class="pojo.Classroom" fetch="join" lazy="false">
             <column name="class_id" />
         </many-to-one>

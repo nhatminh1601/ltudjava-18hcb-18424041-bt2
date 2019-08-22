@@ -55,5 +55,6 @@ Contributor(s):
         <mapping resource="pojo/Classroom.hbm.xml"/>
         <mapping resource="pojo/Schedules.hbm.xml"/>
         <mapping resource="pojo/Students.hbm.xml"/>
+        <mapping resource="pojo/Transcripts.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

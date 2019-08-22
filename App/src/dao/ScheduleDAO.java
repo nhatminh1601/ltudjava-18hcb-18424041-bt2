@@ -7,6 +7,8 @@ package dao;
 
 import static dao.ClassRoomDAO.GetcodeClass;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import org.hibernate.Query;
@@ -54,6 +56,25 @@ public class ScheduleDAO {
 
         return listData;
     }
+    public static Schedules listSchedulescode(String code) {
+        List<Schedules> listData = null;
+        Schedules item = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            String hql = "select sv from Schedules sv where code = :code";
+            Query query = session.createQuery(hql);
+            query.setParameter("code", code);
+            listData = query.list();
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            session.close();
+        }
+        if(listData.size()>0){
+           item = listData.get(0);
+        }
+        return item;
+    }
 
     public static DefaultTableModel ShowScheduleTable(JTable table, String lop) {
         List<Schedules> listDatArrayList = null;
@@ -79,6 +100,15 @@ public class ScheduleDAO {
         table.setModel(model);
         //model.fireTableDataChanged();
 
+        return model;
+    }
+    
+     public static DefaultComboBoxModel showScheduleComboBoxModel(JComboBox comboBox) {
+        List<Schedules> schedulList = listSchedule();
+        DefaultComboBoxModel model = (DefaultComboBoxModel) comboBox.getModel();
+        for (Schedules item : schedulList) {
+            model.addElement(item.getCode());
+        }
         return model;
     }
 
