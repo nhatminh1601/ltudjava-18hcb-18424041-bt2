@@ -853,6 +853,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "sửa thành công!!!");
             String mh = JcomboxMaMonHoc.getSelectedItem().toString();
             ShowScoresTable(JTableScores, mh, jThongke);
+            clearFrom();
             return;
         }
         JOptionPane.showMessageDialog(null, "sửa Thất Bại!!!");
@@ -975,5 +976,16 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField txtname;
     private javax.swing.JTextField txttensv;
     // End of variables declaration//GEN-END:variables
+
+    private void clearFrom() {
+       txtDgiuaky.setText("");
+       txtDmamonhoc.setText("");
+       txtDmsv.setText("");
+       txtDtong.setText("");
+       txtDmamonhoc.setText("");
+       txttensv.setText("");
+       txtdiemkhac.setText("");
+       txtdcuoiky.setText("");
+    }
 
 }

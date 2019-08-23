@@ -113,15 +113,17 @@ public class TranscriptDAO {
         return model;
     }
 
-    public static Transcripts GetIdScores(int studentID, int scheduleID) {
+    public static Transcripts GetIdScores(String studentID, String scheduleID) {
         List<Transcripts> listData = null;
+        Schedules itemSchedules = listSchedulescode(scheduleID);
+        Students itemStudents=GetCodeStudent(studentID);
         Transcripts item = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String hql = "select sv from Transcripts sv where sv.scheduleId = :Schedules and sv.studentId = :student";
+            String hql = "select sv from Transcripts sv where sv.scheduleId = :schedule and sv.studentId = :student";
             Query query = session.createQuery(hql);
-            query.setParameter("Schedules", scheduleID);
-            query.setParameter("student", studentID);
+            query.setParameter("schedule", itemSchedules);
+            query.setParameter("student", itemStudents);
             listData = query.list();
         } catch (HibernateException e) {
             System.out.println(e);
@@ -135,7 +137,7 @@ public class TranscriptDAO {
     public static boolean editScore(Transcripts item, String studentid, String scheduleCode) {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transcripts Data = GetIdScores(GetCodeStudent(studentid).getId(), listSchedulescode(scheduleCode).getId());
+        Transcripts Data = GetIdScores(studentid,scheduleCode );
         if (Data == null) {
             return false;
         }
@@ -143,7 +145,7 @@ public class TranscriptDAO {
         Data.setFinalScores(item.getFinalScores());
         Data.setOtherScores(item.getOtherScores());
         Data.setTotalScores(item.getTotalScores());
-        Data.setStatus(1);
+        Data.setStatus(Byte.parseByte("1"));
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();

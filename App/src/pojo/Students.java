@@ -17,7 +17,7 @@ public class Students implements java.io.Serializable {
     private Byte sex;
     private String indentityCard;
     private String password;
-    private Set<Transcripts> transcriptses=new HashSet<Transcripts>();
+    private Set<Transcripts> transcriptses=new HashSet<Transcripts>(0);
 
     public Students() {
     }

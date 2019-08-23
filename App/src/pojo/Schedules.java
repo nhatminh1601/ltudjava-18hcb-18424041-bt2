@@ -14,7 +14,7 @@ public class Schedules implements java.io.Serializable {
     private String code;
     private String name;
     private String room;
-    private Set<Transcripts> transcriptses = new HashSet<Transcripts>();
+    private Set<Transcripts> listScores = new HashSet<Transcripts>(0);
 
     public Schedules() {
     }
@@ -26,13 +26,15 @@ public class Schedules implements java.io.Serializable {
         this.room = room;
     }
 
-    public Set<Transcripts> getTranscriptses() {
-        return transcriptses;
+    public Set<Transcripts> getListScores() {
+        return listScores;
     }
 
-    public void setTranscriptses(Set<Transcripts> transcriptses) {
-        this.transcriptses = transcriptses;
+    public void setListScores(Set<Transcripts> listScores) {
+        this.listScores = listScores;
     }
+
+   
     
     public Integer getId() {
         return this.id;

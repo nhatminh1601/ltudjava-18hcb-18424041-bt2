@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 17, 2019 10:44:46 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojo.Transcripts" table="transcripts" catalog="Student" optimistic-lock="version">
+        <composite-id>
+            <key-many-to-one class="pojo.Students" name="studentId" column="student_id" lazy="false"/>
+            <key-many-to-one class="pojo.Schedules" name="scheduleId" column="schedule_id" lazy="false" />
+              
+        </composite-id>
+        <property name="midtermScores" type="float">
+            <column name="midterm_scores" />
+        </property>
+        <property name="finalScores" type="float">
+            <column name="final_scores" />
+        </property>
+        <property name="otherScores" type="float">
+            <column name="other_scores" />
+        </property>
+        <property name="totalScores" type="float">
+            <column name="total_scores" />
+        </property>
+        <property name="status" type="java.lang.Byte">
+            <column name="status" />
+        </property>
+    </class>
+</hibernate-mapping>
