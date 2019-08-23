@@ -46,4 +46,6 @@ Contributor(s):
   <table-filter match-name="students"/>
   <table-filter match-name="users"/>
   <table-filter match-name="transcripts"/>
+  <table-filter match-name="references"/>
+  <table-filter match-name="scheduleReferences"/>
 </hibernate-reverse-engineering>

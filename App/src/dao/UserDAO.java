@@ -9,6 +9,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pojo.Users;
 import util.HibernateUtil;
 
@@ -33,7 +34,29 @@ public class UserDAO {
         } catch (HibernateException e) {
             System.err.println(e);
         }
+        finally {
+            session.close();
+        }
         return item;
+    }
+      public static boolean editUser(Users item) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        if (StudentDAO.GetIdStudent(item.getId()) == null) {
+            return false;
+        }
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(item);
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            System.err.println(e);
+
+        } finally {
+            session.close();
+        }
+        return true;
     }
     
 }

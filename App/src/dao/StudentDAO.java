@@ -148,6 +148,7 @@ public class StudentDAO {
         } catch (HibernateException e) {
             transaction.rollback();
             System.err.println(e);
+            return false;
 
         } finally {
             session.close();
@@ -191,6 +192,8 @@ public class StudentDAO {
             }
         } catch (HibernateException e) {
             System.err.println(e);
+        } finally {
+            session.close();
         }
         return item;
     }

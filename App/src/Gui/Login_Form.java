@@ -143,6 +143,15 @@ public class Login_Form extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Kiểm Tra Lại Mật Khẩu Hoặc Tên Đăng Nhập Giáo Vụ!!");
                 return;
             }
+            this.setVisible(false);
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    Main form = new Main(name);
+                    //form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    form.setVisible(true);
+                }
+            });
+            return;
         } else {
             Students item = compareStudent(name, password);
             if (item == null) {
@@ -150,15 +159,17 @@ public class Login_Form extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Kiểm Tra Lại Mật Khẩu Hoặc Tên Đăng Nhập Sinh Viên!!");
                 return;
             }
+            this.setVisible(false);
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    MainStudent form = new MainStudent(name);
+                    //form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    form.setVisible(true);
+                }
+            });
+            return;
         }
-        this.setVisible(false);
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Main form = new Main();
-                //form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                form.setVisible(true);
-            }
-        });
+
 //        Main form = new Main();
 //        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
 //        form.setVisible(true);

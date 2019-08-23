@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 23, 2019 11:34:40 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="pojo.References" table="references" catalog="Student" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="codeStudent" type="string">
+            <column name="code_student" />
+        </property>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="nameSubjects" type="string">
+            <column name="name_subjects" />
+        </property>
+        <property name="codeSubjects" type="string">
+            <column name="code_subjects" />
+        </property>
+        <property name="midtermScores" type="java.lang.Float">
+            <column name="midterm_scores" precision="255" scale="0" />
+        </property>
+        <property name="finalScores" type="java.lang.Float">
+            <column name="final_scores" precision="255" scale="0" />
+        </property>
+        <property name="totalScores" type="java.lang.Float">
+            <column name="total_scores" precision="255" scale="0" />
+        </property>
+        <property name="orderScores" type="java.lang.Float">
+            <column name="order_scores" precision="255" scale="0" />
+        </property>
+        <property name="reason" type="string">
+            <column name="reason" />
+        </property>
+        <property name="status" type="java.lang.Byte">
+            <column name="status" />
+        </property>
+    </class>
+</hibernate-mapping>

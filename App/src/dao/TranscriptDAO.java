@@ -60,6 +60,24 @@ public class TranscriptDAO {
         return listData;
     }
 
+    public static List<Transcripts> listScoresMsv(String msv) {
+        List<Transcripts> listData = null;
+        Students itemStudents = GetCodeStudent(msv);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            String hql = "select sv from Transcripts sv where sv.studentId = :student";
+            Query query = session.createQuery(hql);
+            query.setParameter("student", itemStudents);
+            listData = query.list();
+        } catch (Exception e) {
+            System.err.println(e);
+        } finally {
+            session.close();
+        }
+
+        return listData;
+    }
+
     public static DefaultTableModel ShowScoresTable(JTable table, String code, JLabel jthongke) {
         List<Transcripts> listDatArrayList = null;
         System.out.print(code);
@@ -113,10 +131,52 @@ public class TranscriptDAO {
         return model;
     }
 
+    public static DefaultTableModel ShowScoresStudentTable(JTable table, String mssv) {
+        List<Transcripts> listDatArrayList = null;
+        listDatArrayList = listScoresMsv(mssv);
+
+        int tonghs = listDatArrayList.size();
+        int hsdau = 0;
+        int hsrot = 0;
+        int hocsinhchuacodiem = 0;
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        Object[] row = new Object[9];
+        for (Transcripts item : listDatArrayList) {
+            Students hs = item.getStudentId();
+            row[0] = hs.getCode();
+            row[1] = hs.getName();
+            row[2] = item.getMidtermScores();
+            row[3] = item.getFinalScores();
+            row[4] = item.getOtherScores();
+            row[5] = item.getTotalScores();
+            Schedules schedules = item.getScheduleId();
+            row[6] = schedules.getName();
+            row[7] = schedules.getCode();
+            String kq = "Chưa có kết quả";
+            if (item.getStatus() == 1) {
+                if (item.getTotalScores() >= 5) {
+                    kq = "đậu";
+                    hsdau += 1;
+                } else {
+                    hsrot += 1;
+                    kq = "rớt";
+                }
+            }
+            if (item.getStatus() == 0) {
+                hocsinhchuacodiem += 0;
+            }
+            row[8] = kq;
+            model.addRow(row);
+        }
+        table.setModel(model);
+        return model;
+    }
+
     public static Transcripts GetIdScores(String studentID, String scheduleID) {
         List<Transcripts> listData = null;
         Schedules itemSchedules = listSchedulescode(scheduleID);
-        Students itemStudents=GetCodeStudent(studentID);
+        Students itemStudents = GetCodeStudent(studentID);
         Transcripts item = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -137,7 +197,7 @@ public class TranscriptDAO {
     public static boolean editScore(Transcripts item, String studentid, String scheduleCode) {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transcripts Data = GetIdScores(studentid,scheduleCode );
+        Transcripts Data = GetIdScores(studentid, scheduleCode);
         if (Data == null) {
             return false;
         }
