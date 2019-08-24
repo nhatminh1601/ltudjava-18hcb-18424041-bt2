@@ -26,6 +26,11 @@ public class ScheduleReferences  implements java.io.Serializable {
        this.start = start;
        this.end = end;
     }
+
+    public ScheduleReferences(Date start, Date end) {
+        this.start = start;
+        this.end = end;
+    }
    
     public int getId() {
         return this.id;

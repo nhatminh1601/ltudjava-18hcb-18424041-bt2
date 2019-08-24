@@ -4,9 +4,9 @@
 <!-- Generated Aug 23, 2019 11:34:40 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="pojo.ScheduleReferences" table="scheduleReferences" catalog="Student" optimistic-lock="version">
-        <id name="id" type="int">
+        <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="start" type="timestamp">
             <column name="start" length="19" />
