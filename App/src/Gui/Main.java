@@ -7,6 +7,9 @@ package Gui;
 
 import static dao.ClassRoomDAO.GetcodeClass;
 import static dao.ClassRoomDAO.showClassComboBoxModel;
+import static dao.HandleFile.ReadWriteFileImSchedule;
+import static dao.HandleFile.ReadWriteFileImScores;
+import static dao.HandleFile.ReadWriteFileImStudent;
 import static dao.RefencesDAO.Referencescheck;
 import static dao.RefencesDAO.ShowRefencesTable;
 import static dao.RefencesDAO.editReferences;
@@ -30,6 +33,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import pojo.Classroom;
@@ -46,12 +53,14 @@ import pojo.Users;
 public class Main extends javax.swing.JFrame {
 
     private String username;
+    private JFileChooser fileChooser;
 
     /**
      * Creates new form Main
      */
     public Main() {
         initComponents();
+
         // check nam
         rnam.setSelected(true);
         //remove all
@@ -62,17 +71,16 @@ public class Main extends javax.swing.JFrame {
         jPanelMain.add(panelStudent);
         jPanelMain.repaint();
         jPanelMain.revalidate();
+        resetData();
         String lopAc = CbListClass.getSelectedItem().toString();
         ShowStudentTable(TableStudent, lopAc);
-        showClassComboBoxModel(CbLop);
-        showClassComboBoxModel(CbListClass);
-        showClassComboBoxModel(CbLopLich);
-        showScheduleComboBoxModel(JcomboxMaMonHoc);
+
     }
 
     public Main(String username) {
         this.username = username;
         initComponents();
+
         // check nam
         rnam.setSelected(true);
         //remove all
@@ -83,12 +91,10 @@ public class Main extends javax.swing.JFrame {
         jPanelMain.add(panelStudent);
         jPanelMain.repaint();
         jPanelMain.revalidate();
+        resetData();
         String lopAc = CbListClass.getSelectedItem().toString();
         ShowStudentTable(TableStudent, lopAc);
-        showClassComboBoxModel(CbLop);
-        showClassComboBoxModel(CbListClass);
-        showClassComboBoxModel(CbLopLich);
-        showScheduleComboBoxModel(JcomboxMaMonHoc);
+
     }
 
     /**
@@ -100,17 +106,7 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        menuBar1 = new java.awt.MenuBar();
-        menu1 = new java.awt.Menu();
-        menu2 = new java.awt.Menu();
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jToolBar1 = new javax.swing.JToolBar();
-        toolbarListStudent = new javax.swing.JButton();
-        toolbarSchedule = new javax.swing.JButton();
-        toolbarScores = new javax.swing.JButton();
-        toolbarPhucKhao = new javax.swing.JButton();
-        tbTaophuckhao = new javax.swing.JButton();
-        btndoimatkhau = new javax.swing.JButton();
         jPanelMain = new javax.swing.JPanel();
         panelListScore = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
@@ -130,8 +126,8 @@ public class Main extends javax.swing.JFrame {
         txtDgiuaky = new javax.swing.JTextField();
         txtdiemkhac = new javax.swing.JTextField();
         txttensv = new javax.swing.JTextField();
-        BtnDcapnhat = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        BtnDcapnhat = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         JTableScores = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -210,95 +206,20 @@ public class Main extends javax.swing.JFrame {
                 return false;
             }
         };
-
-        menu1.setLabel("File");
-        menuBar1.add(menu1);
-
-        menu2.setLabel("Edit");
-        menuBar1.add(menu2);
+        jToolBar1 = new javax.swing.JToolBar();
+        toolbarListStudent = new javax.swing.JButton();
+        toolbarSchedule = new javax.swing.JButton();
+        toolbarScores = new javax.swing.JButton();
+        toolbarPhucKhao = new javax.swing.JButton();
+        tbTaophuckhao = new javax.swing.JButton();
+        btndoimatkhau = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        j4 = new javax.swing.JMenu();
+        importStudent = new javax.swing.JMenu();
+        importschedule = new javax.swing.JMenu();
+        importScores = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jToolBar1.setRollover(true);
-
-        toolbarListStudent.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        toolbarListStudent.setText("Danh Sách Sinh Viên");
-        toolbarListStudent.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        toolbarListStudent.setFocusable(false);
-        toolbarListStudent.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        toolbarListStudent.setMargin(new java.awt.Insets(2, 14, 2, 15));
-        toolbarListStudent.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolbarListStudent.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolbarListStudentActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(toolbarListStudent);
-
-        toolbarSchedule.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        toolbarSchedule.setText("Thời Khóa Biểu");
-        toolbarSchedule.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        toolbarSchedule.setFocusable(false);
-        toolbarSchedule.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        toolbarSchedule.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolbarSchedule.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolbarScheduleActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(toolbarSchedule);
-
-        toolbarScores.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        toolbarScores.setText("Danh sách điểm");
-        toolbarScores.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        toolbarScores.setFocusable(false);
-        toolbarScores.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        toolbarScores.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolbarScores.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolbarScoresActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(toolbarScores);
-
-        toolbarPhucKhao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        toolbarPhucKhao.setText("Danh sách phúc khảo");
-        toolbarPhucKhao.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        toolbarPhucKhao.setFocusable(false);
-        toolbarPhucKhao.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        toolbarPhucKhao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        toolbarPhucKhao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toolbarPhucKhaoActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(toolbarPhucKhao);
-
-        tbTaophuckhao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tbTaophuckhao.setText("Tạo phúc khảo");
-        tbTaophuckhao.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        tbTaophuckhao.setFocusable(false);
-        tbTaophuckhao.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        tbTaophuckhao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tbTaophuckhao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tbTaophuckhaoActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(tbTaophuckhao);
-
-        btndoimatkhau.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btndoimatkhau.setText("Đổi mật khẩu");
-        btndoimatkhau.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btndoimatkhau.setFocusable(false);
-        btndoimatkhau.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btndoimatkhau.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btndoimatkhau.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btndoimatkhauActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(btndoimatkhau);
 
         jPanelMain.setBackground(new java.awt.Color(102, 255, 102));
         jPanelMain.setLayout(new java.awt.CardLayout());
@@ -342,11 +263,17 @@ public class Main extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 172, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(46, Short.MAX_VALUE)
+                .addComponent(BtnDcapnhat, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 122, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(BtnDcapnhat)
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -396,8 +323,6 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(283, 283, 283)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnDcapnhat, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -421,19 +346,13 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(txtdcuoiky, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addComponent(jLabel17)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(BtnDcapnhat)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel20)
-                            .addComponent(txtDtong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel20)
+                    .addComponent(txtDtong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         JTableScores.setModel(new javax.swing.table.DefaultTableModel(
@@ -476,12 +395,10 @@ public class Main extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(JcomboxMaMonHoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jThongke, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JcomboxMaMonHoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jThongke, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelListScoreLayout = new javax.swing.GroupLayout(panelListScore);
@@ -497,9 +414,9 @@ public class Main extends javax.swing.JFrame {
             panelListScoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelListScoreLayout.createSequentialGroup()
                 .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -537,23 +454,23 @@ public class Main extends javax.swing.JFrame {
         panelThoikbLayout.setHorizontalGroup(
             panelThoikbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
             .addGroup(panelThoikbLayout.createSequentialGroup()
                 .addComponent(jLabel10)
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
                 .addComponent(CbLopLich, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 819, Short.MAX_VALUE)
         );
         panelThoikbLayout.setVerticalGroup(
             panelThoikbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelThoikbLayout.createSequentialGroup()
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(panelThoikbLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(CbLopLich, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(75, 75, 75)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
+                .addGap(57, 57, 57)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanelMain.add(panelThoikb, "card3");
@@ -748,7 +665,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(panelStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(CbListClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -922,7 +839,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel23)
                 .addGap(37, 37, 37)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 332, Short.MAX_VALUE))
+                .addGap(0, 353, Short.MAX_VALUE))
         );
 
         jPanelMain.add(panelMakhau, "card6");
@@ -1016,17 +933,141 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 157, Short.MAX_VALUE))
+                .addGap(0, 178, Short.MAX_VALUE))
         );
 
         jPanelMain.add(panelPhucKhao, "card7");
+
+        jToolBar1.setRollover(true);
+
+        toolbarListStudent.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        toolbarListStudent.setText("Danh Sách Sinh Viên");
+        toolbarListStudent.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        toolbarListStudent.setFocusable(false);
+        toolbarListStudent.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbarListStudent.setMargin(new java.awt.Insets(2, 14, 2, 15));
+        toolbarListStudent.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbarListStudent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbarListStudentActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolbarListStudent);
+
+        toolbarSchedule.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        toolbarSchedule.setText("Thời Khóa Biểu");
+        toolbarSchedule.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        toolbarSchedule.setFocusable(false);
+        toolbarSchedule.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbarSchedule.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbarSchedule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbarScheduleActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolbarSchedule);
+
+        toolbarScores.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        toolbarScores.setText("Danh sách điểm");
+        toolbarScores.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        toolbarScores.setFocusable(false);
+        toolbarScores.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbarScores.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbarScores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbarScoresActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolbarScores);
+
+        toolbarPhucKhao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        toolbarPhucKhao.setText("Danh sách phúc khảo");
+        toolbarPhucKhao.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        toolbarPhucKhao.setFocusable(false);
+        toolbarPhucKhao.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        toolbarPhucKhao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolbarPhucKhao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toolbarPhucKhaoActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(toolbarPhucKhao);
+
+        tbTaophuckhao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tbTaophuckhao.setText("Tạo phúc khảo");
+        tbTaophuckhao.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tbTaophuckhao.setFocusable(false);
+        tbTaophuckhao.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tbTaophuckhao.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tbTaophuckhao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tbTaophuckhaoActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(tbTaophuckhao);
+
+        btndoimatkhau.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btndoimatkhau.setText("Đổi mật khẩu");
+        btndoimatkhau.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btndoimatkhau.setFocusable(false);
+        btndoimatkhau.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btndoimatkhau.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btndoimatkhau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndoimatkhauActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btndoimatkhau);
+
+        j4.setText("File");
+        j4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                j4ActionPerformed(evt);
+            }
+        });
+
+        importStudent.setText("ImportStudents");
+        importStudent.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                importStudentMouseClicked(evt);
+            }
+        });
+        importStudent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importStudentActionPerformed(evt);
+            }
+        });
+        j4.add(importStudent);
+
+        importschedule.setText("ImportSchedule");
+        importschedule.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                importscheduleMouseClicked(evt);
+            }
+        });
+        j4.add(importschedule);
+
+        importScores.setText("ImportScores");
+        importScores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                importScoresMouseClicked(evt);
+            }
+        });
+        j4.add(importScores);
+
+        jMenuBar1.add(j4);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1222,12 +1263,19 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btndeleteActionPerformed
 
     private void CbListClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbListClassActionPerformed
-        String lopAc = CbListClass.getSelectedItem().toString();
+        String lopAc = "All";
+        if (CbListClass.getSelectedItem() != null) {
+            lopAc = CbListClass.getSelectedItem().toString();
+        }
+
         ShowStudentTable(TableStudent, lopAc);
     }//GEN-LAST:event_CbListClassActionPerformed
 
     private void CbLopLichActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbLopLichActionPerformed
-        String lopAc = CbLopLich.getSelectedItem().toString();
+        String lopAc = "All";
+        if (CbLopLich.getSelectedItem() != null) {
+            lopAc = CbLopLich.getSelectedItem().toString();
+        }
         ShowScheduleTable(TableLich, lopAc);
     }//GEN-LAST:event_CbLopLichActionPerformed
 
@@ -1251,7 +1299,10 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnDcapnhatActionPerformed
 
     private void JcomboxMaMonHocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcomboxMaMonHocActionPerformed
-        String mh = JcomboxMaMonHoc.getSelectedItem().toString();
+        String mh = "All";
+        if (JcomboxMaMonHoc.getSelectedItem() != null) {
+            mh = JcomboxMaMonHoc.getSelectedItem().toString();
+        }
         ShowScoresTable(JTableScores, mh, jThongke);  // TODO add your handling code here:
     }//GEN-LAST:event_JcomboxMaMonHocActionPerformed
 
@@ -1361,6 +1412,68 @@ public class Main extends javax.swing.JFrame {
         return;
     }//GEN-LAST:event_btntaopkActionPerformed
 
+    private void j4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j4ActionPerformed
+
+    }//GEN-LAST:event_j4ActionPerformed
+
+    private void importStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importStudentActionPerformed
+
+    }//GEN-LAST:event_importStudentActionPerformed
+
+    private void importStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importStudentMouseClicked
+        fileChooser = new JFileChooser();
+        if (fileChooser.showOpenDialog(Main.this) == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getPath();
+            if (ReadWriteFileImStudent(filePath)) {
+                resetData();
+                String lopAc = CbListClass.getSelectedItem().toString();
+                ShowStudentTable(TableStudent, lopAc);
+
+                JOptionPane.showMessageDialog(null, "Nhập sinh viên thành công!!!");
+                return;
+            }
+
+        }
+        JOptionPane.showMessageDialog(null, "Nhập sinh viên thất bại!!!");
+        return;
+    }//GEN-LAST:event_importStudentMouseClicked
+
+    private void importscheduleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importscheduleMouseClicked
+        fileChooser = new JFileChooser();
+        if (fileChooser.showOpenDialog(Main.this) == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getPath();
+            if (ReadWriteFileImSchedule(filePath)) {
+                resetData();
+                String lopAc = CbLopLich.getSelectedItem().toString();
+                ShowScheduleTable(TableLich, lopAc);
+                String mh = JcomboxMaMonHoc.getSelectedItem().toString();
+                ShowScoresTable(JTableScores, mh, jThongke);
+
+                JOptionPane.showMessageDialog(null, "Nhập thời khóa biểu thành công!!!");
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Nhập thời khóa biểu thất bại!!!");
+        return;
+    }//GEN-LAST:event_importscheduleMouseClicked
+
+    private void importScoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importScoresMouseClicked
+        fileChooser = new JFileChooser();
+        if (fileChooser.showOpenDialog(Main.this) == JFileChooser.APPROVE_OPTION) {
+            String filePath = fileChooser.getSelectedFile().getPath();
+            if (ReadWriteFileImScores(filePath)) {
+                resetData();
+                String mh = JcomboxMaMonHoc.getSelectedItem().toString();
+                ShowScoresTable(JTableScores, mh, jThongke);
+
+                JOptionPane.showMessageDialog(null, "import thành công!!!");
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "import biểu thất bại!!!");
+        return;
+    }//GEN-LAST:event_importScoresMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1415,6 +1528,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboxpk;
     private javax.swing.JTextField dateEnd;
     private javax.swing.JTextField dateStart;
+    private javax.swing.JMenu importScores;
+    private javax.swing.JMenu importStudent;
+    private javax.swing.JMenu importschedule;
+    private javax.swing.JMenu j4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1445,6 +1562,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1460,9 +1578,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel jThongke;
     private javax.swing.JToolBar jToolBar1;
-    private java.awt.Menu menu1;
-    private java.awt.Menu menu2;
-    private java.awt.MenuBar menuBar1;
     private javax.swing.JPanel panelListScore;
     private javax.swing.JPanel panelMakhau;
     private javax.swing.JPanel panelPhucKhao;
@@ -1506,6 +1621,13 @@ public class Main extends javax.swing.JFrame {
         txttensv.setText("");
         txtdiemkhac.setText("");
         txtdcuoiky.setText("");
+    }
+
+    private void resetData() {
+        showClassComboBoxModel(CbLop, 0);
+        showClassComboBoxModel(CbListClass, 1);
+        showClassComboBoxModel(CbLopLich, 1);
+        showScheduleComboBoxModel(JcomboxMaMonHoc);
     }
 
 }

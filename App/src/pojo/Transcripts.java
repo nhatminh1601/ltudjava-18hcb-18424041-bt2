@@ -21,6 +21,14 @@ public class Transcripts implements java.io.Serializable{
     public Transcripts() {
     }
 
+    public Transcripts(float midtermScores, float finalScores, float otherScores, float totalScores, Byte status) {
+        this.midtermScores = midtermScores;
+        this.finalScores = finalScores;
+        this.otherScores = otherScores;
+        this.totalScores = totalScores;
+        this.status = status;
+    }
+    
     public Transcripts(float midtermScores, float finalScores, float otherScores, float totalScores) {
         this.midtermScores = midtermScores;
         this.finalScores = finalScores;

@@ -115,7 +115,7 @@ public class TranscriptDAO {
                 }
             }
             if (item.getStatus() == 0) {
-                hocsinhchuacodiem += 0;
+                hocsinhchuacodiem += 1;
             }
             row[8] = kq;
             model.addRow(row);
@@ -193,11 +193,54 @@ public class TranscriptDAO {
         }
         return item;
     }
-
-    public static boolean editScore(Transcripts item, String studentid, String scheduleCode) {
+     public static boolean insertScores(Transcripts item) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        if (GetIdScores(item.getStudentId().getCode(),item.getScheduleId().getCode()) != null) {
+            return false;
+        }
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.save(item);
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            System.err.println(e);
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+      public static boolean editScore(Transcripts item, String studentid, String scheduleCode) {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transcripts Data = GetIdScores(studentid, scheduleCode);
+        if (Data == null) {
+            return false;
+        }
+        Data.setMidtermScores(item.getMidtermScores());
+        Data.setFinalScores(item.getFinalScores());
+        Data.setOtherScores(item.getOtherScores());
+        Data.setTotalScores(item.getTotalScores());
+        Data.setStatus(Byte.parseByte("1"));
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.update(Data);
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            System.err.println(e);
+
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+    public static boolean editScoretow(Transcripts item) {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transcripts Data = GetIdScores(item.getStudentId().getCode(), item.getScheduleId().getCode());
         if (Data == null) {
             return false;
         }

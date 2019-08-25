@@ -9,8 +9,10 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pojo.Classroom;
 import util.HibernateUtil;
 
@@ -36,9 +38,14 @@ public class ClassRoomDAO {
         return listData;
     }
 
-    public static DefaultComboBoxModel showClassComboBoxModel(JComboBox comboBox) {
-        List<Classroom> listClassrooms = listClass();
+    public static DefaultComboBoxModel showClassComboBoxModel(JComboBox comboBox,int key) {
+        
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboBox.getModel();
+        model.removeAllElements();
+        if(key==1){
+            model.addElement("All");
+        }
+        List<Classroom> listClassrooms = listClass();
         for (Classroom itemClassroom : listClassrooms) {
             model.addElement(itemClassroom.getCode());
         }
@@ -59,6 +66,46 @@ public class ClassRoomDAO {
         }
         if (Listitem.size() > 0) {
             item = Listitem.get(0);
+        }
+        return item;
+    }
+
+    public static boolean insertClass(Classroom item) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        if (GetcodeClass(item.getCode()) != null) {
+            return false;
+        }
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.save(item);
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            System.err.println(e);
+            return false;
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+
+    public static Classroom insertClassItem(Classroom item) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        if (GetcodeClass(item.getCode()) != null) {
+            return null;
+        }
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.save(item);
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            System.err.println(e);
+            return null;
+        } finally {
+            session.close();
         }
         return item;
     }

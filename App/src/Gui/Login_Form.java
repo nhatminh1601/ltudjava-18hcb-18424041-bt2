@@ -74,6 +74,11 @@ public class Login_Form extends javax.swing.JFrame {
                 btnDangNhapActionPerformed(evt);
             }
         });
+        btnDangNhap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnDangNhapKeyPressed(evt);
+            }
+        });
 
         buttonGroup1.add(rGiaoVu);
         rGiaoVu.setText("Giáo Vụ");
@@ -134,6 +139,55 @@ public class Login_Form extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
+        prosee();
+
+//        Main form = new Main();
+//        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        form.setVisible(true);
+//        form.pack();
+//        form.setLocationRelativeTo(null);
+//        this.dispose();
+    }//GEN-LAST:event_btnDangNhapActionPerformed
+
+    private void btnDangNhapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDangNhapKeyPressed
+     
+    }//GEN-LAST:event_btnDangNhapKeyPressed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                Login_Form loginForm = new Login_Form();
+                loginForm.setTitle("Login");
+                loginForm.setVisible(true);
+
+            }
+        });
+
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDangNhap;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JRadioButton rGiaoVu;
+    private javax.swing.JRadioButton rSinhVien;
+    private javax.swing.JPasswordField tvPassword;
+    private javax.swing.JTextField tvUserName;
+    // End of variables declaration//GEN-END:variables
+
+    private void resetfrom() {
+        tvPassword.setText("");
+        tvUserName.setText("");
+        tvUserName.requestFocus();
+    }
+
+    private void prosee() {
         String name = tvUserName.getText();
         String password = tvPassword.getText();
         if (rGiaoVu.isSelected()) {
@@ -168,47 +222,6 @@ public class Login_Form extends javax.swing.JFrame {
                 }
             });
             return;
-        }
-
-//        Main form = new Main();
-//        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        form.setVisible(true);
-//        form.pack();
-//        form.setLocationRelativeTo(null);
-//        this.dispose();
-    }//GEN-LAST:event_btnDangNhapActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Login_Form loginForm = new Login_Form();
-                loginForm.setTitle("Login");
-                loginForm.setVisible(true);
-
-            }
-        });
-
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnDangNhap;
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JRadioButton rGiaoVu;
-    private javax.swing.JRadioButton rSinhVien;
-    private javax.swing.JPasswordField tvPassword;
-    private javax.swing.JTextField tvUserName;
-    // End of variables declaration//GEN-END:variables
-
-    private void resetfrom() {
-        tvPassword.setText("");
-        tvUserName.setText("");
-        tvUserName.requestFocus();
+        } //To change body of generated methods, choose Tools | Templates.
     }
 }

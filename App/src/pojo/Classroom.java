@@ -19,6 +19,10 @@ public class Classroom  implements java.io.Serializable {
     public Classroom() {
     }
 
+    public Classroom(String code) {
+        this.code = code;
+    }
+    
     public Classroom(String code, Set scheduleses, Set studentses) {
        this.code = code;
        this.scheduleses = scheduleses;

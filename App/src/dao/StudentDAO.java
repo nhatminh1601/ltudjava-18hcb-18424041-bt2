@@ -104,7 +104,22 @@ public class StudentDAO {
             return item;
         }
     }
-
+    public static List<Students> GetListCodeStudent(Classroom codeSv) {
+        Students item = null;
+        List<Students> listItemList = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            String hqlString = "FROM Students s WHERE s.classroom = :codesv";
+            Query query = session.createQuery(hqlString);
+            query.setParameter("codesv", codeSv);
+            listItemList = query.list();
+        } catch (HibernateException e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            return listItemList;
+        }
+    }
     public static Students GetIdStudent(int id) {
         Students item = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -113,6 +128,7 @@ public class StudentDAO {
         } catch (HibernateException e) {
             System.out.println(e);
         }
+        session.close();
         return item;
     }
 

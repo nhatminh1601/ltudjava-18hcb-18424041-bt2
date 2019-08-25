@@ -11,8 +11,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pojo.Classroom;
 import pojo.Schedules;
 import util.HibernateUtil;
@@ -106,10 +108,32 @@ public class ScheduleDAO {
      public static DefaultComboBoxModel showScheduleComboBoxModel(JComboBox comboBox) {
         List<Schedules> schedulList = listSchedule();
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboBox.getModel();
+         model.removeAllElements();
+         model.addElement("All");
         for (Schedules item : schedulList) {
             model.addElement(item.getCode());
         }
         return model;
     }
+     
+      public static Schedules insertSchedule(Schedules item) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        if (listSchedulescode(item.getCode()) != null) {
+            return null;
+        }
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            session.save(item);
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            System.err.println(e);
+        } finally {
+            session.close();
+        }
+        return item;
+    }
+      
 
 }
